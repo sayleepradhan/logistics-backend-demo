@@ -13,7 +13,7 @@ engine = create_engine(
 )
 
 def create_db_tables():
-    from .models import Shipment
+    from app.schemas import Shipment
     SQLModel.metadata.create_all(bind=engine)
 
 def get_session():
