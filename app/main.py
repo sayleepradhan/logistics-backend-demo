@@ -1,5 +1,3 @@
-from enum import Enum
-
 from fastapi import FastAPI, status, HTTPException
 from scalar_fastapi import get_scalar_api_reference
 from typing import Any
