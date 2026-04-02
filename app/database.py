@@ -2,6 +2,7 @@ import sqlite3
 from .schemas import Shipment
 from typing import Any
 import os
+from contextlib import contextmanager
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "sqlite.db")
 
@@ -88,26 +89,27 @@ class Database:
         # Close the connection when done
         self.conn.close()
 
-    def __enter__(self):
-        self.connect_to_db()
-        self.create_table()
-        return self
+    # def __enter__(self):
+    #     self.connect_to_db()
+    #     self.create_table()
+    #     return self
 
-    def __exit__(self, *arg):
-        self.close()
+    # def __exit__(self, *arg):
+    #     self.close()
 
-def managed_db(self):
+@contextmanager
+def managed_db():
     db = Database()
 
     #Setup
-    self.connect_to_db()
-    self.create_table()
+    db.connect_to_db()
+    db.create_table()
 
     yield db
 
     # Dispose
     db.close()
 
-with Database() as db:
+with managed_db() as db:
         print(db.get(12701))
         print(db.get(12702))
