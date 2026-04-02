@@ -1,7 +1,7 @@
-import datetime
+from datetime import datetime
 
-from sqlmodel import Field,SQLModel
-from typing import Enum
+from sqlmodel import Field, SQLModel
+from enum import Enum
 
 class ShipmentStatus(str, Enum):
     placed = "placed"
@@ -10,10 +10,10 @@ class ShipmentStatus(str, Enum):
     delivered = "delivered" 
 
 
-class ShipmentModel(SQLModel, table=True):
+class Shipment(SQLModel, table=True):
     __tablename__ = "shipment"
 
-    id: int = Field(primary_key=True)
+    id: int = Field(default=None, primary_key=True)
     content: str
     weight: float = Field(le=25)
     destination: int
