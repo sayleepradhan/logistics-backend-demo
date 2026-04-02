@@ -1,11 +1,14 @@
 import sqlite3
 from .schemas import Shipment
 from typing import Any
+import os
+
+DB_PATH = os.path.join(os.path.dirname(__file__), "sqlite.db")
 
 class Database:
     def connect_to_db(self):
-        # Make connection with databse
-        self.conn = sqlite3.connect("sqlite.db", check_same_thread=False)
+        # Make connection with database
+        self.conn = sqlite3.connect(DB_PATH, check_same_thread=False)
         
         #Get cursor to execute queries and fetch data
         self.cur = self.conn.cursor()
@@ -105,7 +108,6 @@ def managed_db(self):
     # Dispose
     db.close()
 
-if __name__ == "__main__":    
-    with Database() as db:
+with Database() as db:
         print(db.get(12701))
         print(db.get(12702))
