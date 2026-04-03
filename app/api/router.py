@@ -1,9 +1,7 @@
-from datetime import datetime, timedelta
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 
-from app.database.models import ShipmentStatus
 from app.database.session import SessionDep
 from app.schemas.shipment import Shipment, ShipmentCreate, ShipmentUpdate
 from app.service.shipment import ShipmentService
