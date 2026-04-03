@@ -9,7 +9,7 @@ from app.database.session import create_db_tables
 
 @asynccontextmanager
 async def lifespan_handler(app: FastAPI):
-    create_db_tables()
+    await create_db_tables()
     yield
 
 app = FastAPI(lifespan=lifespan_handler)

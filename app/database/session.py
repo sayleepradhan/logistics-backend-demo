@@ -17,7 +17,7 @@ engine = create_async_engine(
 async def create_db_tables():
     async with engine.begin() as connection:
         from app.schemas.shipment import Shipment  # noqa: F401
-        await connection.run_sync(SQLModel.metadata.create_all(bind=engine))
+        await connection.run_sync(SQLModel.metadata.create_all)
 
 async def get_session():
     async_session = sessionmaker (
@@ -26,7 +26,7 @@ async def get_session():
         expire_on_commit=False
     )
 
-    with async_session() as session:
+    async with async_session() as session:
         yield session
 
 SessionDep = Annotated[AsyncSession, Depends(get_session)]
