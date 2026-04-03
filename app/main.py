@@ -18,8 +18,8 @@ async def lifespan_handler(app: FastAPI):
 app = FastAPI(lifespan=lifespan_handler)
 
 @app.get("/shipment", response_model=Shipment)
-def get_shipment(id: int, session: SessionDep):
-    shipment = session.get(Shipment, id)
+async def get_shipment(id: int, session: SessionDep):
+    shipment = await session.get(Shipment, id)
     if shipment is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -28,20 +28,20 @@ def get_shipment(id: int, session: SessionDep):
     return shipment
 
 @app.post("/shipment", response_model=None)
-def submit_shipment(shipment: ShipmentCreate, session: SessionDep):
+async def submit_shipment(shipment: ShipmentCreate, session: SessionDep):
     new_shipment = Shipment(
         **shipment.model_dump(),
         status = ShipmentStatus.placed,
         estimated_delivery = datetime.now() + timedelta(days=3)
     )
     session.add(new_shipment)
-    session.commit()
-    session.refresh(new_shipment)
+    await session.commit()
+    await session.refresh(new_shipment)
 
     return {"id": new_shipment.id}
 
 @app.patch("/shipment/", response_model=Shipment)
-def update_shipment(id: int, shipment_update: ShipmentUpdate, session: SessionDep):
+async def update_shipment(id: int, shipment_update: ShipmentUpdate, session: SessionDep):
     shipment = session.get(Shipment, id)
     if shipment is None:
         raise HTTPException(
@@ -58,17 +58,17 @@ def update_shipment(id: int, shipment_update: ShipmentUpdate, session: SessionDe
     
     shipment.sqlmodel_update(update)
     session.add(shipment)
-    session.commit()
-    session.refresh(shipment)
+    await session.commit()
+    await session.refresh(shipment)
 
     return shipment
 
 @app.delete("/shipment/")
-def delete_shipment(id: int, session: SessionDep) -> dict[str, Any]:
+async def delete_shipment(id: int, session: SessionDep) -> dict[str, Any]:
     session.delete(
         session.get(Shipment, id)
     )
-    session.commit()
+    await session.commit()
     return {"detail": f"Shipment with id {id} is deleted."}
 
 
