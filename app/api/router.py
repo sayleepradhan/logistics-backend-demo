@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, status
 
 from app.database.models import ShipmentStatus
 from app.database.session import SessionDep
-from app.schemas import Shipment, ShipmentCreate, ShipmentUpdate
+from app.schemas.shipment import Shipment, ShipmentCreate, ShipmentUpdate
 
 router = APIRouter()
 
