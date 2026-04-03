@@ -1,11 +1,11 @@
 from typing import Annotated
 
 from fastapi import Depends
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 
-from config import settings
+from app.config import settings
 
 engine = create_async_engine(
     # database type/dialect and file name
@@ -16,7 +16,7 @@ engine = create_async_engine(
 
 async def create_db_tables():
     async with engine.begin() as connection:
-        from app.schemas import Shipment # noqa: F401
+        from app.schemas import Shipment  # noqa: F401
         await connection.run_sync(SQLModel.metadata.create_all(bind=engine))
 
 async def get_session():

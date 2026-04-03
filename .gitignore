@@ -7,3 +7,5 @@ app/__pycache__/
 app/database/__pycache__/*
 __pycache__/*
 sqlite.db
+api/__init__.py
+api/__pycache__/*
