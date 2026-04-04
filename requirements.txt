@@ -5,3 +5,4 @@ sqlmodel
 pydantic_settings
 asyncpg
 bcrypt
+pyjwt

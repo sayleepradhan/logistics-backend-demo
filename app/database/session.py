@@ -5,11 +5,11 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 
-from app.config import settings
+from app.config import db_settings
 
 engine = create_async_engine(
     # database type/dialect and file name
-    url=settings.POSTGRES_URL,
+    url=db_settings.POSTGRES_URL,
     # Log sql queries
     echo=True,
 )
