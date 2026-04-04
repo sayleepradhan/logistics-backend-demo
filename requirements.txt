@@ -4,3 +4,4 @@ scalar_fastapi
 sqlmodel
 pydantic_settings
 asyncpg
+bcrypt
