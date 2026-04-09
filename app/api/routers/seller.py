@@ -31,4 +31,4 @@ async def login_seller(
 ### Logout the seller
 @router.get("/logout")
 async def logout_seller(token_data: Annotated[dict, Depends(get_seller_access_token)]):
-    add_jti_to_blacklist(token_data["jti"])
+    await add_jti_to_blacklist(token_data["jti"])
