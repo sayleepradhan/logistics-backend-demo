@@ -7,3 +7,4 @@ asyncpg
 bcrypt
 pyjwt
 redis[hiredis]
+alembic
