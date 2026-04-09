@@ -23,5 +23,6 @@ class BaseService:
         return await self._add(entity)
     
     async def _delete(self, entity: SQLModel):
-        return await self.session.delete(entity)
+        await self.session.delete(entity)
+        await self.session.commit()
 

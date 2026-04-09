@@ -67,7 +67,7 @@ async def get_current_partner(
         )
     return partner
 
-DeliveryPartnerDep = Annotated[Seller, Depends(get_current_partner)]
+DeliveryPartnerDep = Annotated[DeliveryPartner, Depends(get_current_partner)]
 
 def get_partner_service(session: SessionDep):
     return DeliveryPartnerService(session)
