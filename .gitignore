@@ -16,3 +16,5 @@ app/api/routers/__init__.py
 app/api/routers/__pycache__/
 app/core/__init__.py
 app/core/__pycache__/
+migrations/__pycache__/
+migrations/versions/__pycache__/
