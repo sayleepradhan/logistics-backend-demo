@@ -5,7 +5,8 @@ from fastapi.security import HTTPBearer, OAuth2PasswordBearer
 
 from app.services.utils import decode_access_token
 
-oauth2_scheme =OAuth2PasswordBearer("/seller/token")
+oauth2_scheme_seller =OAuth2PasswordBearer("/seller/token")
+oauth2_scheme_delivery_partner =OAuth2PasswordBearer("/partner/token")
 
 class AccessTokenBearer(HTTPBearer):
     async def __call__(self, request):
