@@ -1,14 +1,11 @@
-from datetime import datetime, timedelta
-
-import jwt
 from bcrypt import checkpw, gensalt, hashpw
 from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.config import security_settings
 from app.database.models import Seller
 from app.schemas.seller import SellerCreate
+from app.services.utils import generate_access_token
 
 
 class SellerService:
@@ -37,7 +34,7 @@ class SellerService:
         )
         seller = result.scalar()
 
-        if seller is None or checkpw(
+        if seller is None or not checkpw(
             password.encode("utf-8"), 
             seller.password_hash.encode("utf-8")
         ):
@@ -46,15 +43,12 @@ class SellerService:
                 detail="Email or password is incorrect"
             )
 
-        token = jwt.encode(
-            payload = {
-                "user": {
-                    "name": seller.name,
-                    "email": seller.email
+        token = generate_access_token(
+            data= {
+                    "user": {
+                        "name": seller.name,
+                        "id": seller.id
+                    }
                 },
-                "exp" : datetime.now() + timedelta(days=1)
-            },
-            algorithm = security_settings.JWT_ALGORITHM,
-            key = security_settings.JWT_SECRET
         )
         return token

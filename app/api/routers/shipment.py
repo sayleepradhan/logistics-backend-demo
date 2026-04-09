@@ -2,19 +2,26 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, status
 
-from app.api.dependencies import ShipmentServiceDep
+from app.api.dependencies import SellerDep, ShipmentServiceDep
 from app.schemas.shipment import Shipment, ShipmentCreate, ShipmentUpdate
 
 router = APIRouter(tags=["Shipment"])
 
 @router.get("/shipment", response_model=Shipment)
-async def get_shipment(id: int, service: ShipmentServiceDep):
+async def get_shipment(
+    id: int, 
+    service: ShipmentServiceDep,
+    seller: SellerDep
+):
     return await service.get(id)
 
 @router.post("/shipment", response_model=None)
-async def submit_shipment(shipment: ShipmentCreate, service: ShipmentServiceDep):
-    new_shipment = await service.add(shipment)
-    return {"id": new_shipment.id}
+async def submit_shipment(
+    seller: SellerDep,
+    shipment: ShipmentCreate,
+    service: ShipmentServiceDep
+):
+    return await service.add(shipment)
 
 @router.patch("/shipment/", response_model=Shipment)
 async def update_shipment(id: int, shipment_update: ShipmentUpdate, service: ShipmentServiceDep):
