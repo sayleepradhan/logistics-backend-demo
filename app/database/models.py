@@ -41,11 +41,10 @@ class Shipment(BaseShipment, table=True):
             primary_key=True
         )
     )
-    status: ShipmentStatus = Field(
-            sa_column=Column(
-            PgEnum(ShipmentStatus, name='shipmentstatus', create_type=False),
-            nullable=False
-        )
+
+    timeline: list["ShipmentEvent"] = Relationship(
+        back_populates="shipment",
+        sa_relationship_kwargs= { "lazy": "selectin" }
     )
     estimated_delivery: datetime
 
@@ -65,6 +64,34 @@ class Shipment(BaseShipment, table=True):
             postgresql.TIMESTAMP,
             default = datetime.now()
         )
+    )
+
+class ShipmentEvent(SQLModel, table=True):
+    __tablename__ = "shipment_event"
+
+    id: UUID = Field(
+        sa_column=Column(
+            postgresql.UUID,
+            default=uuid4,
+            primary_key=True
+        )
+    )
+
+    created_at: datetime = Field(
+        sa_column = Column(
+            postgresql.TIMESTAMP,
+            default = datetime.now()
+        )
+    )
+
+    location: int
+    status: ShipmentStatus
+    description: str | None = Field(default=None)
+
+    shipment_id: UUID = Field(foreign_key="shipment.id")
+    shipment: Shipment = Relationship(
+        back_populates="timeline",
+        sa_relationship_kwargs= { "lazy": "selectin" }
     )
 
 class User(SQLModel):
@@ -94,6 +121,9 @@ class Seller(User, table=True):
             default = datetime.now()
         )
     )
+
+    address: str | None
+    zipcode: int | None
 
 class DeliveryPartner(User, table=True):
     __tablename__ = "delivery_partner"
